@@ -2,6 +2,7 @@
 
 %token                 EOF
 %token <int>           LITINT
+<<<<<<< HEAD
 %token <Symbol.symbol> ID
 %token                 PLUS
 %token                 LT
@@ -21,6 +22,25 @@
 
 %nonassoc LT
 %left PLUS
+=======
+%token                 PLUS
+%token                 INT
+%token                 BOOL
+%token                 LET
+%token                 IN
+%token                 IF
+%token                 THEN
+%token                 ELSE
+%token                 LT
+%token                 LPAREN
+%token                 RPAREN
+%token                 COMMA
+%token                 EQ
+%token <Symbol.symbol> ID
+
+
+
+>>>>>>> add: tokens
 
 %%
 
