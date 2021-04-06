@@ -2,7 +2,6 @@
 
 %token                 EOF
 %token <int>           LITINT
-<<<<<<< HEAD
 %token <Symbol.symbol> ID
 %token                 PLUS
 %token                 LT
@@ -18,38 +17,29 @@
 %token                 LET
 %token                 IN
 
-%start <Absyn.lfundec> program
+%start <Absyn.lfundecs> program
 
 %nonassoc LT
 %left PLUS
-=======
-%token                 PLUS
-%token                 INT
-%token                 BOOL
-%token                 LET
-%token                 IN
-%token                 IF
-%token                 THEN
-%token                 ELSE
-%token                 LT
-%token                 LPAREN
-%token                 RPAREN
-%token                 COMMA
-%token                 EQ
-%token <Symbol.symbol> ID
-
-
-
->>>>>>> add: tokens
+%nonassoc IN ELSE
 
 %%
 
 program:
-| x=fundec EOF { x }
+| x=nonempty_list(fundec) EOF    { $loc , x }
+
+
+exps:
+| x=separated_nonempty_list(COMMA, exp) {x}
 
 exp:
-| x=LITINT                { $loc , Absyn.IntExp x }
-| x=exp op=operator y=exp { $loc , Absyn.OpExp (op, x, y) }
+| x=LITINT                       { $loc,  Absyn.IntExp x }
+| x=ID                           { $loc,  Absyn.IdExp x }
+| x=exp op=operator y=exp        { $loc,  Absyn.OpExp (op, x, y) }
+| IF x=exp THEN y=exp ELSE z=exp { $loc,  Absyn.CondExp (x,y,z) }
+| x=ID LPAREN y=exps RPAREN      { $loc,  Absyn.FuncCallExp (x,y) } 
+| LET x=ID EQ y=exp IN z=exp     { $loc,  Absyn.DeclarationExp(x,y,z) }
+
 
 %inline operator:
 | PLUS { Absyn.Plus }
