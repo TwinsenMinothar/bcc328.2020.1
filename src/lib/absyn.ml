@@ -9,15 +9,17 @@ type 'a loc = 'a Location.loc
 type operator =
   | Plus
   | LT
+  | EQ
   [@@deriving show]
 
 type exp =
   | IntExp of int
   | VarExp of symbol
   | OpExp of operator * lexp * lexp
-  | IfExp of lexp * lexp * lexp
-  | CallExp of symbol * lexp list
-  | LetExp of symbol * lexp * lexp
+  | IdExp of symbol
+  | CondExp of lexp * lexp * lexp
+  | FuncCallExp of symbol * lexp list
+  | DeclarationExp of symbol * lexp * lexp
   [@@deriving show]
 
 and program = lfundec list
@@ -35,3 +37,7 @@ and lexp = exp loc
 
 and lfundec = fundec loc
   [@@deriving show]
+
+and lfundecs = (lfundec list) loc
+  [@@deriving show]
+

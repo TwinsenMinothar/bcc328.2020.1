@@ -23,6 +23,7 @@ let stringfy_operator op =
   match op with
   | Plus -> "+"
   | LT -> "<"
+  | EQ -> "="
 
 (* Convert an expression to a generic tree *)
 let rec tree_of_exp exp =
@@ -30,9 +31,10 @@ let rec tree_of_exp exp =
   | IntExp x -> mktr (sprintf "IntExp %i" x) []
   | VarExp x -> mktr (sprintf "VarExp %s" (name x)) []
   | OpExp (op, l, r) -> mktr (sprintf "OpExp %s" (stringfy_operator op)) [tree_of_lexp l; tree_of_lexp r]
-  | IfExp (t, x, y) -> mktr "IfExp" [tree_of_lexp t; tree_of_lexp x; tree_of_lexp y]
-  | CallExp (f, a) -> mktr (sprintf "CallExp %s" (name f)) (map tree_of_lexp a)
-  | LetExp (x, i, e) -> mktr (sprintf "LetExp %s" (name x)) [tree_of_lexp i; tree_of_lexp e]
+  | IdExp x -> mktr (sprintf "IdExp %s" (name x)) []
+  | CondExp (exp1, exp2, exp3)-> mktr (sprintf "CondExp if") [tree_of_lexp exp1; tree_of_lexp exp2; tree_of_lexp exp3]
+  | FuncCallExp (x, exp) -> mktr (sprintf "FuncCallExp %s" (name x)) (List.map tree_of_lexp exp)
+  | DeclarationExp (x, exp1, exp2) -> mktr (sprintf "DeclarationExp %s" (name x)) [tree_of_lexp exp1; tree_of_lexp exp2]
 
 and tree_of_fundec (typeid, params, body) =
   mktr
@@ -54,3 +56,5 @@ and tree_of_lexp (_, x) = tree_of_exp x
 and tree_of_lfundec (_, x) = tree_of_fundec x
 
 and tree_of_lsymbol (_, x) = tree_of_symbol x
+
+and tree_of_lfundecs (_, lfuncs) = mktr "Program tree" (List.map tree_of_lfundec lfuncs)
