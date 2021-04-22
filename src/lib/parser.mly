@@ -22,7 +22,6 @@
 %nonassoc ELSE IN
 %nonassoc LT
 %left PLUS
-%nonassoc IN ELSE
 
 %%
 
@@ -55,6 +54,3 @@ typeid:
 
 typeids:
 | x=separated_nonempty_list(COMMA, typeid) { x }
-
-exps:
-| x=separated_nonempty_list(COMMA, exp) { x }

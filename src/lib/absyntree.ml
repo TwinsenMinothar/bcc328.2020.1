@@ -44,9 +44,6 @@ and tree_of_fundec (typeid, params, body) =
       tree_of_lexp body
     ]
 
-and tree_of_program fundecs =
-  mktr "Program" (List.map tree_of_lfundec fundecs)
-
 and tree_of_typeid (type_, id) =
   mktr (sprintf "%s:%s" (name id) (show_type_ type_)) []
 
@@ -57,4 +54,4 @@ and tree_of_lfundec (_, x) = tree_of_fundec x
 
 and tree_of_lsymbol (_, x) = tree_of_symbol x
 
-and tree_of_lfundecs (_, lfuncs) = mktr "Program tree" (List.map tree_of_lfundec lfuncs)
+and tree_of_lfundecs (_, funcs) = mktr "Program tree" (List.map tree_of_lfundec funcs)
