@@ -41,7 +41,7 @@ let main () =
       print_endline ("Semantic Analysis:");
       print_endline "============================================================";
       Semantic.check_program(ast);
-
+      (*program wont run*)
 
   with
   | Error.Error (loc, msg) ->
